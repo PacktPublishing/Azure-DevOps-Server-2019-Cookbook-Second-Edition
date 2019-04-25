@@ -1,0 +1,29 @@
+resources:
+- repo: self
+queue:
+  name: Default
+  demands: 
+  - msbuild
+  - visualstudio
+
+steps:
+- task: VSBuild@1
+  displayName: 'Build solution AdventureWorks2017.sln'
+  inputs:
+    solution: AdventureWorks2017.sln
+    msbuildArgs: '/p:CmdLineInMemoryStorage=True'
+    platform: 'any cpu'
+    configuration: release
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(Agent.BuildDirectory)'
+    Contents: '**\*.dacpac'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    flattenFolders: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: databases'
+  inputs:
+    ArtifactName: databases

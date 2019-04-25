@@ -1,0 +1,111 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environmentConfiguration": {
+            "type": "object"
+        },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_ZRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Premium_LRS"
+            ]
+        }
+    },
+    "variables": {
+        "appAppServicePlanName": "[toLower(concat(parameters('environmentConfiguration').prefix.appServiceApp))]",
+        "deployedFunctionAppName": "[toLower(concat(parameters('environmentConfiguration').prefix.functionApp,'-',uniqueString(resourceGroup().id)))]",
+        "storageAccountName": "[take(toLower(concat(parameters('environmentConfiguration').prefix.storageAccount, uniqueString(resourceGroup().id))),24)]",
+        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "storageConnection": "[toLower(parameters('environmentConfiguration').prefix.storageAccountconnection)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2015-04-01",
+            "name": "[variables('appAppServicePlanName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[variables('appAppServicePlanName')]",
+                "computeMode": "Dynamic",
+                "sku": "Dynamic"
+            }
+        },
+        {
+            "name": "[variables('deployedFunctionAppName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[resourceGroup().location]",
+            "kind": "functionapp",
+            "apiVersion": "2016-08-01",
+            "identity": {
+                "type": "systemAssigned"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appAppServicePlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "name": "[variables('deployedFunctionAppName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appAppServicePlanName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "AzureWebJobsSecretStorageType",
+                            "value": "files"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[toLower(variables('deployedFunctionAppName'))]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "StorageConnection",
+                            "value": "[variables('storageConnection')]"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "8.11.1"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[variables('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-01-01",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            },
+            "dependsOn": [],
+            "kind": "Storage"
+        }
+    ],
+    "outputs": {
+        "helloworld.fnc.name": {
+            "type": "string",
+            "value": "[variables('deployedFunctionAppName')]"
+        }
+    }
+}

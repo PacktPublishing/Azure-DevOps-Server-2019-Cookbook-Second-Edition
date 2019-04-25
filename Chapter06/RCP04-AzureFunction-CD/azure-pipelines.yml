@@ -1,0 +1,46 @@
+resources:
+- repo: self
+queue:
+  name: Default
+  demands: npm
+
+trigger: none
+
+steps:
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    workingDir: '$(build.sourcesdirectory)/continuous-deployments/rcp-deploy-az-function/Function'
+    verbose: false
+
+- task: Npm@1
+  displayName: 'install func cli'
+  inputs:
+    command: custom
+    workingDir: '$(build.sourcesdirectory)/continuous-deployments/rcp-deploy-az-function/Function'
+    verbose: false
+    customCommand: 'install -g azure-functions-core-tools --unsafe-perm true'
+
+- task: Npm@1
+  displayName: 'npm build:production'
+  inputs:
+    command: custom
+    workingDir: '$(build.sourcesdirectory)/continuous-deployments/rcp-deploy-az-function/Function'
+    verbose: false
+    customCommand: 'run build:production'
+
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)/continuous-deployments/rcp-deploy-az-function/Function'
+    Contents: |
+     dist/**
+     HelloWorld/**
+     node_modules/**
+     bin/**
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'

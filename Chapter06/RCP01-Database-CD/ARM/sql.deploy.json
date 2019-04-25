@@ -1,0 +1,106 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environmentConfiguration": {
+            "type": "object"
+        },
+        "sqlserverAdminLogin": {
+            "type": "string"
+        },
+        "sqlServerAdminPassword": {
+            "type": "securestring"
+        },
+        "sqldbCollation": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "sqldbEdition": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ]
+        },
+        "sqldbRequestedServiceObjectiveName": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "S0",
+                "S1",
+                "S2",
+                "P1",
+                "P2",
+                "P3"
+            ],
+            "metadata": {
+                "description": "Describes the performance level for Edition"
+            }
+        }
+    },
+    "variables": {
+        "sqlServerName": "[toLower(concat(parameters('environmentConfiguration').prefix.sqlServer, '-1','-',uniqueString(resourceGroup().id)))]",
+        "deployedAdventureWorksSqlDbName": "[toLower(concat(parameters('environmentConfiguration').prefix.sqlDb,'-', 'AdventureWorks'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('sqlServerName')]",
+            "type": "Microsoft.Sql/servers",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [],
+            "properties": {
+                "administratorLogin": "[parameters('sqlserverAdminLogin')]",
+                "administratorLoginPassword": "[parameters('sqlServerAdminPassword')]"
+            },
+            "resources": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "type": "firewallrules",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2014-04-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers',variables('sqlServerName'))]"
+                    ],
+                    "properties": {
+                        "startIpAddress": "0.0.0.0",
+                        "endIpAddress": "0.0.0.0"
+                    }
+                },
+                {
+                    "name": "[variables('deployedAdventureWorksSqlDbName')]",
+                    "type": "databases",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2014-04-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers',variables('sqlServerName'))]"
+                    ],
+                    "properties": {
+                        "collation": "[parameters('sqldbCollation')]",
+                        "edition": "[parameters('sqldbEdition')]",
+                        "maxSizeBytes": "1073741824",
+                        "requestedServiceObjectiveName": "[parameters('sqldbRequestedServiceObjectiveName')]"
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "sql.sqlserver.qualified.name": {
+            "type": "string",
+            "value": "[reference(variables('sqlServerName')).fullyQualifiedDomainName]"
+        },
+        "sql.sqlserver.name": {
+            "type": "string",
+            "value": "[variables('sqlServerName')]"
+        },
+        "sql.adventureworks.sqldb.name": {
+            "type": "string",
+            "value": "[variables('deployedAdventureWorksSqlDbName')]"
+        }
+    }
+}

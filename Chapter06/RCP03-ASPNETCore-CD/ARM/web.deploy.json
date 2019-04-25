@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environmentConfiguration": {
+            "type": "object"
+        },
+        "appServiceSkuName": {
+            "type": "string",
+            "defaultValue": "B2",
+            "allowedValues": [
+                "F1",
+                "D1",
+                "B1",
+                "B2",
+                "B3",
+                "S1",
+                "S2",
+                "S3",
+                "P1",
+                "P2",
+                "P3",
+                "P4"
+            ],
+            "metadata": {
+                "description": "App Service SKU name for server farm"
+            }
+        },
+        "appServiceSkuCapacity": {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 1,
+            "metadata": {
+                "description": "Describes plan's instance count"
+            }
+        },
+        "deploymentSlots": {
+            "defaultValue": [
+                "staging"
+            ],
+            "type": "array",
+            "metadata": {
+                "description": "Array with the names for the environment slots"
+            }
+        }
+    },
+    "variables": {
+        "webAppServicePlanName": "[concat(parameters('environmentConfiguration').prefix.appServiceWeb)]",
+        "deployedWebAppName": "[concat(parameters('environmentConfiguration').prefix.webApp, '-', 'mywebapp','-',uniqueString(resourceGroup().id))]",
+        "myWebAppResourceId": "[resourceId('Microsoft.Web/Sites', variables('deployedWebAppName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-09-01",
+            "name": "[variables('webAppServicePlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('appServiceSkuName')]",
+                "capacity": "[parameters('appServiceSkuCapacity')]"
+            },
+            "properties": {
+                "name": "[variables('webAppServicePlanName')]"
+            }
+        },
+        {
+            "name": "[variables('deployedWebAppName')]",
+            "apiVersion": "2016-08-01",
+            "type": "Microsoft.Web/sites",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms/', variables('webAppServicePlanName'))]"
+            ],
+            "properties": {
+                "name": "[variables('deployedWebAppName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppServicePlanName'))]"
+            },
+            "resources": []
+        },
+        {
+            "apiVersion": "2016-08-01",
+            "type": "Microsoft.Web/sites/slots",
+            "name": "[concat(variables('deployedWebAppName'), '/', parameters('deploymentSlots')[copyIndex()])]",
+            "kind": "app",
+            "location": "[resourceGroup().location]",
+            "comments": "This specifies the web app slots.",
+            "tags": {
+                "displayName": "WebAppSlots"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppServicePlanName'))]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/Sites', variables('deployedWebAppName'))]"
+            ],
+            "copy": {
+                "name": "webPortalSlot",
+                "count": "[length(parameters('deploymentSlots'))]"
+            }
+        }
+    ],
+    "outputs": {
+        "my.webapp.name": {
+            "type": "string",
+            "value": "[variables('deployedWebAppName')]"
+        },
+        "my.webapp.uri": {
+            "type": "string",
+            "value": "[concat('https://',reference(variables('myWebAppResourceId')).hostnames[0])]"
+        }
+    }
+}
