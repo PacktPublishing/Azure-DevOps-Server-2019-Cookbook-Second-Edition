@@ -1,0 +1,33 @@
+resources:
+- repo: self
+queue:
+  name: Default
+
+name: $(major).$(minor).$(rev:r)
+variables:
+  major: 1
+  minor: 0
+  buildconfiguration: release
+
+steps:
+- task: DotNetCoreInstaller@0
+  displayName: 'Use .NET Core sdk 2.2.104'
+  inputs:
+    version: 2.2.104
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    projects: '$(build.sourcesdirectory)/artifacts/dotnetcore-nuget/MyClassLib/MyClassLib.csproj'
+    arguments: '--configuration $(BuildConfiguration) /p:Version=$(build.buildnumber)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: 'artifacts/dotnetcore-nuget/MyClassLib/MyClassLib.csproj'
+    nobuild: true
+    versioningScheme: byBuildNumber
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'

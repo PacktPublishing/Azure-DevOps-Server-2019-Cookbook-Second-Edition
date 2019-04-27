@@ -1,0 +1,17 @@
+{
+  "name": "print-azure-devops",
+  "version": "1.0.0",
+  "description": "A demo npm package which just prints Azure DevOps Server 2019",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "demo"
+  ],
+  "author": "Utkarsh Shigihalli (www.visualstudiogeeks.com)",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "~1.3.3"
+  }
+}

@@ -1,0 +1,21 @@
+resources:
+- repo: self
+queue:
+  name: Default
+  demands: npm
+name: 1.0.$(rev:r)
+
+steps:
+- task: Npm@1
+  displayName: 'npm version'
+  inputs:
+    command: custom
+    workingDir: 'artifacts/npm-print-azure-devops'
+    verbose: false
+    customCommand: 'version $(build.buildnumber)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'publish npm package as artifact'
+  inputs:
+    PathtoPublish: '$(build.sourcesdirectory)/artifacts/npm-print-azure-devops'
+    ArtifactName: 'npm-package'
