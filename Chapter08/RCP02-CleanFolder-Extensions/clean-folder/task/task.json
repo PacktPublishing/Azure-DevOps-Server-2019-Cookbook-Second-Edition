@@ -1,0 +1,49 @@
+{
+    "id": "20a947f2-c251-42e8-8376-5d7c5c1f8e71",
+    "name": "clean-folder",
+    "friendlyName": "Clean Folder",
+    "description": "Clean folder using the glob pattern",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "author": "Utkarsh Shigihalli",
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 6
+    },
+    "instanceNameFormat": "Clean folder $(rootDirectory)",
+    "inputs": [
+        {
+            "name": "rootDirectory",
+            "type": "string",
+            "label": "Root directory",
+            "defaultValue": "$(System.DefaultWorkingDirectory)",
+            "required": true,
+            "helpMarkDown": "Root directory"
+        },
+        {
+            "name": "globPattern",
+            "defaultValue": "*\\*.tmp\n!**\\*important.json\n!**\\obj\\**",
+            "type": "multiLine",
+            "properties": {
+                "resizable": "true",
+                "rows": "3"
+            },
+            "label": "Search Pattern",
+            "required": true,
+            "helpMarkDown": "Supports multiple lines of minimatch patterns. [More Information](https://aka.ms/minimatchexamples)"
+        }
+    ],
+    "execution": {
+        "Node10": {
+            "target": "index.js"
+        },
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

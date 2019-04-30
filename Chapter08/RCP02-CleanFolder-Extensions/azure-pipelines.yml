@@ -1,0 +1,71 @@
+resources:
+- repo: self
+queue:
+  name: Default
+  demands: npm
+
+name: 1.0.$(rev:r)
+
+steps:
+- task: Npm@1
+  displayName: 'install all the dependencies'
+  inputs:
+    command: custom
+    workingDir: 'extensions/clean-folder'
+    verbose: false
+    customCommand: 'run initdev'
+
+- task: Npm@1
+  displayName: 'compile and lint'
+  inputs:
+    command: custom
+    workingDir: 'extensions/clean-folder'
+    verbose: false
+    customCommand: 'run compile -- --project $(build.sourcesdirectory)/extensions/clean-folder'
+
+
+- powershell: |
+   $buildNumber = $env:BUILD_BUILDNUMBER
+   
+   $versionNumber = $buildNumber.Split(".")
+   $major = $versionNumber[0]
+   $minor = $versionNumber[1]
+   $patch = $versionNumber[2]
+   
+   write-host "##vso[task.setvariable variable=major]$major"
+   write-host "##vso[task.setvariable variable=minor]$minor"
+   write-host "##vso[task.setvariable variable=patch]$patch"
+  displayName: 'get version from build number'
+
+- task: geeklearningio.gl-vsts-tasks-file-patch.json-patch-task.JsonPatch@3
+  displayName: 'Update version in **/task.json'
+  inputs:
+    JsonWorkingDir: '$(system.defaultworkingdirectory)/extensions/clean-folder'
+    JsonTargetFilters: '**/task.json'
+    JsonPatchContent: |
+     = /version/Major=> $(major)
+     = /version/Minor=> $(minor)
+     = /version/Patch=> $(patch)
+     = /helpMarkDown => "v$(build.buildnumber)"
+    OutputPatchFile: true
+
+- task: geeklearningio.gl-vsts-tasks-file-patch.json-patch-task.JsonPatch@3
+  displayName: 'Update extension version in vss-extension.json'
+  inputs:
+    JsonWorkingDir: '$(system.defaultworkingdirectory)/extensions/clean-folder'
+    JsonTargetFilters: 'vss-extension.json'
+    JsonPatchContent: '= /version=> "$(build.buildnumber)"'
+    OutputPatchFile: true
+
+- task: Npm@1
+  displayName: 'copy to dist folder'
+  inputs:
+    command: custom
+    workingDir: 'extensions/clean-folder'
+    verbose: false
+    customCommand: 'run copy'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'publish contents of dist as artifact'
+  inputs:
+    PathtoPublish: '$(system.defaultworkingdirectory)/extensions/clean-folder/dist'

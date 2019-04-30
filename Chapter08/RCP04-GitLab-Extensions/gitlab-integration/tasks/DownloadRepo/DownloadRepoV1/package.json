@@ -1,0 +1,22 @@
+{
+  "name": "onlyutkarsh-gitlab-dev",
+  "version": "0.0.0",
+  "description": "download artifact task",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onlyutkarsh/gitlab-integration.git"
+  },
+  "scripts": {
+    "clean-task": "npm dedupe && npm prune --production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "azure-pipelines-task-lib": "~2.7.7",
+    "events": "^3.0.0",
+    "fs-extra": "^7.0.1",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "clean-folder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Utkarsh Shigihalli",
+  "license": "ISC",
+  "dependencies": {
+    "azure-pipelines-task-lib": "~2.7.7",
+    "del": "~3.0.0"
+  },
+  "devDependencies": {
+    "@types/del": "~3.0.1",
+    "@types/node": "~10.12.21",
+    "@types/q": "~1.5.1"
+  }
+}

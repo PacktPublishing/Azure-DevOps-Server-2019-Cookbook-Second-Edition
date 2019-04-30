@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="../lib/VSS.SDK.min.js"></script>
+    <script>
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+        });
+        // Wait for the SDK to be initialized then load a script
+        VSS.ready(function () {
+            console.log("VSS Ready ");
+            VSS.require(["src/main"], function (main) {
+                console.log("Main loaded...")
+                VSS.notifyLoadSucceeded();
+            });
+        });
+    </script>
+</head>
+
+<body style="overflow:auto;">
+    <p> Hello, your work item group contribution is now active! </p>
+    <button type="button" id="clickme">Click me!</button>
+    <div class='events'> </div>
+</body>
+
+</html>

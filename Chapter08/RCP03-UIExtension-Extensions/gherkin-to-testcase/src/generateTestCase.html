@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="../lib/VSS.SDK.min.js"></script>
+    <script>
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+        });
+        // Wait for the SDK to be initialized then load a script
+        VSS.ready(function () {
+            console.log("VSS Ready ");
+            VSS.require(["src/generateTestCase"], function (generate) {
+                console.log("Generate loaded...")
+            });
+        });
+    </script>
+</head>
+
+<body style="overflow:auto;">
+
+</body>
+
+</html>

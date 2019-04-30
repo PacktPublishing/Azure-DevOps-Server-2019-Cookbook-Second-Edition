@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es2015.promise",
+      "es5"
+    ],
+    "module": "amd",
+    "moduleResolution": "node",
+    "target": "es5",
+    "outDir": "dist/",
+    "sourceMap": true,
+    "types": [
+      "vss-web-extension-sdk"
+    ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+  },
+  "include": [
+    "src/**/*",
+    "scripts/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

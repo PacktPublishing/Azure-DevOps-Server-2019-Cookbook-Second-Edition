@@ -1,0 +1,75 @@
+{
+	"manifestVersion": 1,
+	"id": "gherkin-to-testcase",
+	"version": "0.0.8",
+	"name": "Acceptance Criteria to Test Case",
+	"description": "Convert acceptance criteria written in Gherkin to Test cases.",
+	"publisher": "onlyutkarsh",
+	"targets": [
+		{
+			"id": "Microsoft.VisualStudio.Services"
+		}
+	],
+	"categories": [
+		"Plan and track"
+	],
+	"icons": {
+		"default": "images/logo128.png"
+	},
+	"branding": {
+		"color": "rgb(69,90,100)",
+		"theme": "dark"
+	},
+	"content": {
+		"details": {
+			"path": "readme.md"
+		}
+	},
+	"scopes": [
+		"vso.work_write",
+		"vso.test_write"
+	],
+	"demands": [
+		"api-version/3.0"
+	],
+	"contributions": [
+		{
+			"id": "sample-work-item-form-group",
+			"type": "ms.vss-work-web.work-item-form-group",
+			"description": "Custom work item form group",
+			"targets": [
+				"ms.vss-work-web.work-item-form"
+			],
+			"properties": {
+				"name": "My Group",
+				"uri": "src/main.html",
+				"height": 600
+			}
+		},
+		{
+			"id": "sample-work-item-menu",
+			"type": "ms.vss-web.action",
+			"description": "Sample toolbar item which updates the title of a work item",
+			"targets": [
+				"ms.vss-work-web.work-item-context-menu"
+			],
+			"properties": {
+				"text": "Try me!",
+				"title": "Updates the title of the work item from the extension",
+				"toolbarText": "Try me!",
+				"icon": "images/gen-test-case.png",
+				"uri": "src/generateTestCase.html"
+			}
+		}
+	],
+	"files": [
+		{
+			"path": "src",
+			"addressable": true
+		},
+		{
+			"path": "images",
+			"addressable": true
+		}
+	]
+}

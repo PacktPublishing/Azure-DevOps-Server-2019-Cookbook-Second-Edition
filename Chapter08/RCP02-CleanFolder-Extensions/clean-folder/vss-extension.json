@@ -1,0 +1,67 @@
+{
+	"manifestVersion": 1,
+	"id": "cookbook-clean-folder",
+	"name": "Clean Folder",
+	"publisher": "onlyutkarsh",
+	"version": "0.0.6",
+	"public": false,
+	"description": "A simple utility extension to delete files/folders based on glob pattern specified",
+	"categories": [
+		"Azure Pipelines",
+		"Azure Repos"
+	],
+	"Tags": [
+		"Azure DevOps",
+		"Azure Pipelines",
+		"Release",
+		"Build"
+	],
+	"targets": [
+		{
+			"id": "Microsoft.VisualStudio.Services"
+		}
+	],
+	"icons": {
+		"default": "images/logo128.png",
+		"large": "images/logo512.png"
+	},
+	"branding": {
+		"color": "#3B3E43",
+		"theme": "dark"
+	},
+	"repository": {
+		"type": "git",
+		"uri": "https://github.com/onlyutkarsh/cookbook2019"
+	},
+	"content": {
+		"details": {
+			"path": "readme.md"
+		}
+	},
+	"screenshots": [
+		{
+			"path": "images/screenshot.png"
+		}
+	],
+	"files": [
+		{
+			"path": "task"
+		},
+		{
+			"path": "images",
+			"addressable": "true"
+		}
+	],
+	"contributions": [
+		{
+			"id": "clean-folder",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "task"
+			}
+		}
+	]
+}

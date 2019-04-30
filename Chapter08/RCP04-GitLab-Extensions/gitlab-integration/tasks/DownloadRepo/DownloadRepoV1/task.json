@@ -1,0 +1,131 @@
+{
+	"id": "ca83284d-c3f5-46a5-ba52-dacd68ea6747",
+	"name": "downloadgitlabrepositorycookbook",
+	"friendlyName": "Download GitLab repository",
+	"description": "Download your GitLab repository using 'clone' command in your build/release pipeline.",
+	"author": "Utkarsh Shigihalli",
+	"helpMarkDown": "[More Information](https://marketplace.visualstudio.com/items?itemName=onlyutkarsh.gitlab-integration)",
+	"category": "Utility",
+	"visibility": [
+		"Build",
+		"Release"
+	],
+	"demands": [],
+	"version": {
+		"Major": 1,
+		"Minor": 0,
+		"Patch": 3
+	},
+	"minimumAgentVersion": "2.115.0",
+	"instanceNameFormat": "Download GitLab repository",
+	"inputs": [
+		{
+			"name": "connection",
+			"type": "connectedService:GitLab",
+			"label": "GitLab Connection",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "GitLab service connection"
+		},
+		{
+			"name": "definition",
+			"type": "pickList",
+			"label": "Repository",
+			"defaultValue": "",
+			"required": true,
+			"properties": {
+				"EditableOptions": "True"
+			},
+			"helpMarkDown": "GitLab repository id"
+		},
+		{
+			"name": "versionSelector",
+			"type": "pickList",
+			"label": "Default version",
+			"required": true,
+			"helpMarkDown": "Version of artifact",
+			"defaultValue": "latestDefaultBranch",
+			"options": {
+				"latestDefaultBranch": "Latest from default branch",
+				"latestSpecificBranch": "Latest from specific branch",
+				"specificVersion": "Specific version"
+			}
+		},
+		{
+			"name": "branch",
+			"type": "pickList",
+			"label": "Branch",
+			"defaultValue": "",
+			"required": true,
+			"properties": {
+				"EditableOptions": "True"
+			},
+			"helpMarkDown": "Branch to checkout",
+			"visibleRule": "versionSelector = latestSpecificBranch || versionSelector == specificVersion"
+		},
+		{
+			"name": "version",
+			"type": "pickList",
+			"label": "Commit Id",
+			"defaultValue": "",
+			"required": true,
+			"properties": {
+				"EditableOptions": "True"
+			},
+			"helpMarkDown": "Commit id",
+			"visibleRule": "versionSelector == specificVersion"
+		},
+		{
+			"name": "downloadPath",
+			"type": "string",
+			"label": "Download Path",
+			"defaultValue": "$(System.DefaultWorkingDirectory)",
+			"required": false,
+			"helpMarkDown": "Optional. Path on the agent machine where the artifacts will be downloaded. If not supplied, uses `$(System.DefaultWorkingDirectory)`"
+		}
+	],
+	"dataSourceBindings": [
+		{
+			"target": "definition",
+			"endpointId": "$(connection)",
+			"dataSourceName": "Repositories",
+			"parameters": {},
+			"resultTemplate": "{ \"Value\" : \"{{id}}\", \"DisplayValue\" : \"{{{path_with_namespace}}}\" }"
+		},
+		{
+			"target": "branch",
+			"endpointId": "$(connection)",
+			"dataSourceName": "Branches",
+			"parameters": {
+				"definition": "$(definition)"
+			},
+			"resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\" : \"{{{name}}}\" }"
+		},
+		{
+			"target": "version",
+			"endpointId": "$(connection)",
+			"dataSourceName": "CommitsFromSelectedBranch",
+			"parameters": {
+				"definition": "$(definition)",
+				"branch": "$(branch)"
+			},
+			"resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\" : \"{{{short_id}}}\" }"
+		},
+		{
+			"target": "latestversion",
+			"endpointId": "$(connection)",
+			"dataSourceName": "LatestCommit",
+			"parameters": {
+				"definition": "$(definition)",
+				"branch": "$(branch)"
+			},
+			"resultTemplate": "{ \"Value\" : \"{{{id}}}\", \"DisplayValue\" : \"{{{short_id}}}\" }"
+		}
+	],
+	"execution": {
+		"Node": {
+			"target": "index.js",
+			"argumentFormat": ""
+		}
+	}
+}
