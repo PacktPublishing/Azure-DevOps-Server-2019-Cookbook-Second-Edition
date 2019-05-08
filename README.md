@@ -40,9 +40,9 @@ With the following software and hardware list you can run all code files present
 
 
 ### Related products
-* Learn Robotics Programming [[PACKT]](https://prod.packtpub.com/hardware-and-creative/learn-robotics-programming?utm_source=github&utm_medium=repository&utm_campaign=9781789340747) [[Amazon]](https://www.amazon.com/dp/1789340748)
+* Hands-On Azure for Developers [[PACKT]](https://prod.packtpub.com/virtualization-and-cloud/hands-azure-developers?utm_source=github&utm_medium=repository&utm_campaign=9781789340624) [[Amazon]](https://www.amazon.com/dp/1789340624)
 
-* Mastering ROS for Robotics Programming [[PACKT]](https://prod.packtpub.com/hardware-and-creative/mastering-ros-robotics-programming?utm_source=github&utm_medium=repository&utm_campaign=9781783551798) [[Amazon]](https://www.amazon.com/dp/1788478959)
+* Learn Microsoft Azure [[PACKT]](https://prod.packtpub.com/virtualization-and-cloud/learn-microsoft-azure?utm_source=github&utm_medium=repository&utm_campaign=9781789617580) [[Amazon]](https://www.amazon.com/dp/1788478959)
 
 
 
