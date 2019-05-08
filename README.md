@@ -14,31 +14,30 @@ By the end of this book, techniques provided in the book will help you break dow
 
 This book covers the following exciting features:
 
-* Install software in Raspberry Pi compatible with C++ programming
-* Program the Raspberry Pi in C++ to run a motor
-* Control RPi-powered robot wirelessly with your laptop or PC
-* Program an RPi camera using OpenCV Control a Raspberry Pi robot with voice commands
-* Implement face and object detection with Raspberry Pi
+* Set up a team project for an Agile delivery team, importing requirements from Excel
+* Plan,track, and monitor progress using self updating boards, Sprint and Kanban boards
+* Unlock the features of Git by using branch policies, Git pull requests, forks, and Git hooks
+* Build and release .NET core, SQL and Node.js applications using Azure Pipeline
+* Automate testing by integrating Microsoft and open source testing frameworks
 
-If you feel this book is for you, get your [copy](https://www.amazon.com/dp/1789139007) today!
+If you feel this book is for you, get your [copy](https://www.amazon.com/dp/1788839250) today!
 
 <a href="https://www.packtpub.com/?utm_source=github&utm_medium=banner&utm_campaign=GitHubBanner"><img src="https://raw.githubusercontent.com/PacktPublishing/GitHub/master/GitHub.png" 
 alt="https://www.packtpub.com/" border="5" /></a>
 
 ## Instructions and Navigations
-All of the code is organized into folders. For example, Chapter02.
+All of the code is organized into folders. For example, Chapter06.
 
 **Following is what you need for this book:**
-This book is for developers, programmers, and robotics enthusiasts interested in leveraging C++ to build exciting robotics applications. Prior knowledge of C++ is necessary to understand the projects covered in this book.
+This book is for anyone looking to succeed with DevOps. The techniques in this book apply to all roles of the software development lifecycle including developers, testers, architects, configuration analysts, site reliability engineers and release managers. If you are a new user you’ll learn how to get started; if you are an experienced user you’ll learn how to launch your project into a modern and mature DevOps enabled software development team.
 
 With the following software and hardware list you can run all code files present in the book:
 ### Software and Hardware List
 | Chapter | Software/Hardware required | OS required |
 | -------- | ------------------------------------ | ----------------------------------- |
-| All | Raspberry Pi Zero or Raspberry Pi B+ | Raspbian Stretch |
+| All | Azure DevOps Server 2019 | Windows 10 |
 
 
-We also provide a PDF file that has color images of the screenshots/diagrams used in this book. [Click here to download it](https://www.packtpub.com/sites/default/files/downloads/9781789139006_ColorImages.pdf).
 
 ### Related products
 * Learn Robotics Programming [[PACKT]](https://prod.packtpub.com/hardware-and-creative/learn-robotics-programming?utm_source=github&utm_medium=repository&utm_campaign=9781789340747) [[Amazon]](https://www.amazon.com/dp/1789340748)
