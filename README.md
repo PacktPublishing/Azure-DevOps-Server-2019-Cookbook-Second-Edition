@@ -1,7 +1,7 @@
 # Azure DevOps Server 2019 Cookbook - Second Edition 
 <a href="https://prod.packtpub.com/in/networking-and-servers/azure-devops-server-2019-cookbook-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781788839259">  <img src="https://prod.packtpub.com/media/catalog/product/cache/a22c7d190d97ca25f5f1089471ab8502/b/1/b10651_mockupcover_0.png" alt="Azure DevOps Server 2019 Cookbook - Second Edition" height="256px" align="right"></a>
 
-This is the code repository for [Azure DevOps Server 2019 Cookbook - Second Edition](https://prod.packtpub.com/hardware-and-creative/hands-robotics-programming-c?utm_source=github&utm_medium=repository&utm_campaign=9781789139006), published by Packt.
+This is the code repository for [Azure DevOps Server 2019 Cookbook - Second Edition](https://prod.packtpub.com/in/networking-and-servers/azure-devops-server-2019-cookbook-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781788839259), published by Packt.
 
 **Proven recipes to accelerate your DevOps journey with Azure DevOps Server 2019 (formerly TFS)**
 
