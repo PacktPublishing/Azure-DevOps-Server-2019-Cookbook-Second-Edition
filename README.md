@@ -1,3 +1,7 @@
+## [Get this title for $10 on Packt's Spring Sale](https://www.packt.com/B09762?utm_source=github&utm_medium=packt-github-repo&utm_campaign=spring_10_dollar_2022)
+-----
+For a limited period, all eBooks and Videos are only $10. All the practical content you need \- by developers, for developers
+
 # Azure DevOps Server 2019 Cookbook - Second Edition 
 <a href="https://prod.packtpub.com/in/networking-and-servers/azure-devops-server-2019-cookbook-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781788839259">  <img src="https://github.com/PacktPublishing/Azure-DevOps-Server-2019-Cookbook-Second-Edition/blob/master/9781788839259.png" alt="Azure DevOps Server 2019 Cookbook - Second Edition" height="256px" align="right"></a>
 
